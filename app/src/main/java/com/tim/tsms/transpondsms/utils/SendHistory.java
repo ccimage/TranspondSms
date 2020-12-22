@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,8 @@ public class SendHistory {
         if(msg_set.size()>SettingUtil.getMsgHistoryCount()){
             msg_set.clear();
         }
-        msg_set.add(msg);
+        Date now = new Date();
+        msg_set.add(now.toString() + msg);
         sp.edit().putStringSet(Define.SP_MSG_SET_KEY,msg_set).apply();
     }
 
@@ -44,5 +46,9 @@ public class SendHistory {
         }
         return getMsg;
     }
-
+    public static void addHistoryAnyway(String msg){
+        //保存
+        SharedPreferences sp = context.getSharedPreferences(Define.SP_MSG,Context.MODE_PRIVATE);
+        sp.edit().putString(Define.SP_MSG_SET_KEY, msg).apply();
+    }
 }

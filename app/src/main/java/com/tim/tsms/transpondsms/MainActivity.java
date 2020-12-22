@@ -18,11 +18,12 @@ import android.widget.TextView;
 
 
 import com.tim.tsms.transpondsms.BroadCastReceiver.TSMSBroadcastReceiver;
+import com.tim.tsms.transpondsms.utils.InitUtil;
 import com.tim.tsms.transpondsms.utils.SendHistory;
 import com.tim.tsms.transpondsms.utils.SendUtil;
+import com.tim.tsms.transpondsms.utils.SettingUtil;
 import com.tim.tsms.transpondsms.utils.UpdateAppHttpUtil;
 import com.tim.tsms.transpondsms.utils.aUtil;
-import com.umeng.analytics.MobclickAgent;
 import com.vector.update_app.UpdateAppManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,14 +38,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"oncreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         textv_msg=(TextView) findViewById(R.id.textv_msg);
 
         textv_msg.setMovementMethod(ScrollingMovementMethod.getInstance());
+        SendHistory.init(textv_msg.getContext());
         textv_msg.setText(SendHistory.getHistory());
-
+        InitUtil.init(textv_msg.getContext());
         checkPermission();
 
-//        intentFilter=new IntentFilter();
+//       intentFilter=new IntentFilter();
 //        intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
 //        intentFilter.addAction(MessageBroadcastReceiver.ACTION_DINGDING);
 //        smsBroadcastReceiver=new SMSBroadcastReceiver();
@@ -57,21 +60,17 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"onDestroy");
         super.onDestroy();
         //取消注册广播
-        unregisterReceiver(smsBroadcastReceiver);
+        //unregisterReceiver(smsBroadcastReceiver);
     }
 
     public void sendMsg(View view){
         try{
-//            6位数随机数
-//            DingdingMsg.sendMsg(Integer.toString((int) (Math.random()*9+1)*100000));
-            SendUtil.send_msg(Integer.toString((int) (Math.random()*9+1)*100000));
-//            SendMailUtil.send("1547681531@qq.com","s","2");
+            SendUtil.send_msg(Integer.toString((int) (Math.random()*100000)));
         }catch (Exception e){
             e.printStackTrace();
         }
 
     }
-
 
     public void toSetting(){
         Intent intent = new Intent(this, SettingActivity.class);
@@ -99,10 +98,7 @@ public class MainActivity extends AppCompatActivity {
         boolean permission_receive_boot = (PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.RECEIVE_BOOT_COMPLETED", this.getPackageName()));
         boolean permission_readsms = (PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.READ_SMS", this.getPackageName()));
 
-        if (!(
-                permission_receive_boot
-                && permission_readsms
-        )) {
+        if (!permission_receive_boot || !permission_readsms) {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.RECEIVE_BOOT_COMPLETED,
                     Manifest.permission.READ_SMS,
@@ -111,25 +107,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkNewVersion(){
-        String geturl = "http://api.allmything.com/api/version/hasnew?versioncode=";
-
-        try {
-            geturl+= aUtil.getVersionCode(MainActivity.this);
-
-            Log.i("SettingActivity",geturl);
-            new UpdateAppManager
-                    .Builder()
-                    //当前Activity
-                    .setActivity(MainActivity.this)
-                    //更新地址
-                    .setUpdateUrl(geturl)
-                    //实现httpManager接口的对象
-                    .setHttpManager(new UpdateAppHttpUtil())
-                    .build()
-                    .update();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String geturl = "http://api.allmything.com/api/version/hasnew?versioncode=";
+//
+//        try {
+//            geturl+= aUtil.getVersionCode(MainActivity.this);
+//
+//            Log.i("SettingActivity",geturl);
+//            new UpdateAppManager
+//                    .Builder()
+//                    //当前Activity
+//                    .setActivity(MainActivity.this)
+//                    //更新地址
+//                    .setUpdateUrl(geturl)
+//                    //实现httpManager接口的对象
+//                    .setHttpManager(new UpdateAppHttpUtil())
+//                    .build()
+//                    .update();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -158,13 +154,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
     }
 
 }

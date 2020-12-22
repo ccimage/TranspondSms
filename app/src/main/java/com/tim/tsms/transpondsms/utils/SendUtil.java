@@ -17,7 +17,9 @@ public class SendUtil {
         if(SettingUtil.using_email()){
             SendMailUtil.send(SettingUtil.get_send_util_email(Define.SP_MSG_SEND_UTIL_EMAIL_TOADD_KEY),"转发",msg);
         }
-
+        if(SettingUtil.using_wechat()){
+            WechatHelper.send(msg);
+        }
     }
 
 }

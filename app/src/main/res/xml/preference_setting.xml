@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="转发设置">
-
+        <EditTextPreference
+            android:key="option_sms_filter"
+            android:summary="短信过滤 ;号之间是与的关系,|号之间是或的关系"
+            android:title="短信过滤" />
         <SwitchPreference
             android:checked="false"
             android:key="option_dingding_on"
@@ -31,6 +34,15 @@
             android:summaryOff="关闭邮箱转发"
             android:summaryOn="开启邮箱转发"
             android:title="邮箱转发" />
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:key="option_wechat_on"
+            android:summary="使用企业微信转发短信"
+            android:summaryOff="关闭微信转发"
+            android:summaryOn="开启微信转发"
+            android:title="企业微信转发" />
 
     </PreferenceCategory>
 

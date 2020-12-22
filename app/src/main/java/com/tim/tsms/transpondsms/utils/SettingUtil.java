@@ -68,5 +68,31 @@ public class SettingUtil {
     public static int getMsgHistoryCount(){
         return Integer.valueOf(sp_setting.getString("option_save_history_num","100"));
     }
-
+    public static String get_send_util_wechat(String key){
+        Log.d(TAG,"get_send_util_wechat  key"+key);
+        String defaultstt ="";
+        if(key.equals(Define.SP_MSG_SEND_UTIL_WECHAT_CORP_ID)) defaultstt = "Corp Id";
+        if(key.equals(Define.SP_MSG_SEND_UTIL_WECHAT_SECRET)) defaultstt = "Secret";
+        if(key.equals(Define.SP_MSG_SEND_UTIL_WECHAT_TAG_ID)) defaultstt = "Send to Tag";
+        if(key.equals(Define.SP_MSG_SEND_UTIL_WECHAT_AGENT_ID)) defaultstt = "Agent Id";
+        return sp_setting.getString(key,defaultstt);
+    }
+    public static void set_send_util_wechat(String corp, String secret,String tag,String agent){
+        //验证
+        if(corp.equals("")||secret.equals("")||tag.equals("")||agent.equals("")){
+            return;
+        }
+        sp_setting.edit()
+                .putString(Define.SP_MSG_SEND_UTIL_WECHAT_CORP_ID, corp)
+                .putString(Define.SP_MSG_SEND_UTIL_WECHAT_SECRET, secret)
+                .putString(Define.SP_MSG_SEND_UTIL_WECHAT_TAG_ID, tag)
+                .putString(Define.SP_MSG_SEND_UTIL_WECHAT_AGENT_ID, agent)
+                .apply();
+    }
+    public static boolean using_wechat(){
+        return sp_setting.getBoolean("option_wechat_on",false);
+    }
+    public static String get_sms_filter(){
+        return sp_setting.getString("option_sms_filter","");
+    }
 }

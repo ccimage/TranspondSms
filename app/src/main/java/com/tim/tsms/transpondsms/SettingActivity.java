@@ -10,13 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.tim.tsms.transpondsms.utils.Define;
 import com.tim.tsms.transpondsms.utils.SettingUtil;
-import com.tim.tsms.transpondsms.utils.UpdateAppHttpUtil;
 import com.tim.tsms.transpondsms.utils.aUtil;
-import com.vector.update_app.UpdateAppManager;
 
 
 public class SettingActivity extends PreferenceActivity {
@@ -28,6 +25,7 @@ public class SettingActivity extends PreferenceActivity {
 
         SwitchPreference emailSwitch = (SwitchPreference)findPreference("option_email_on");
         SwitchPreference withrebootSwitch = (SwitchPreference)findPreference("option_withreboot");
+        SwitchPreference wechatSwitch = (SwitchPreference)findPreference("option_wechat_on");
         emailSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -38,6 +36,15 @@ public class SettingActivity extends PreferenceActivity {
             }
         });
         checkWithReboot(withrebootSwitch);
+        wechatSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if((Boolean)newValue){
+                    setWechat();
+                }
+                return true;
+            }
+        });
 
         Preference versionnowPreference = (Preference)findPreference("option_versionnow");
         try {
@@ -100,5 +107,32 @@ public class SettingActivity extends PreferenceActivity {
             }
         });
     }
+    private void setWechat(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingActivity.this);
+        View viewSetting = View.inflate(SettingActivity.this, R.layout.activity_alter_dialog_setview_wechat, null);
 
+        final EditText editTextCorpId = viewSetting.findViewById(R.id.editTextCorpId);
+        editTextCorpId.setText(SettingUtil.get_send_util_wechat(Define.SP_MSG_SEND_UTIL_WECHAT_CORP_ID));
+        final EditText editTextSecret = viewSetting.findViewById(R.id.editTextCorpSecret);
+        editTextSecret.setText(SettingUtil.get_send_util_wechat(Define.SP_MSG_SEND_UTIL_WECHAT_SECRET));
+        final EditText editTextTag = viewSetting.findViewById(R.id.editTextSendToTag);
+        editTextTag.setText(SettingUtil.get_send_util_wechat(Define.SP_MSG_SEND_UTIL_WECHAT_TAG_ID));
+        final EditText editTextAgent = viewSetting.findViewById(R.id.editTextAgentId);
+        editTextAgent.setText(SettingUtil.get_send_util_wechat(Define.SP_MSG_SEND_UTIL_WECHAT_AGENT_ID));
+
+        Button btn = viewSetting.findViewById(R.id.buttonewechatok);
+        alertDialog
+                .setTitle(R.string.setwechattitle)
+                .setIcon(R.mipmap.ic_launcher)
+                .setView(viewSetting)
+                .create();
+        final AlertDialog show = alertDialog.show();
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SettingUtil.set_send_util_wechat(editTextCorpId.getText().toString(),editTextSecret.getText().toString(),editTextTag.getText().toString(),editTextAgent.getText().toString());
+                show.dismiss();
+            }
+        });
+    }
 }
