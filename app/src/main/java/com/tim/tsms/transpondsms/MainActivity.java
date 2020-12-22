@@ -47,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
         InitUtil.init(textv_msg.getContext());
         checkPermission();
 
-//       intentFilter=new IntentFilter();
-//        intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
+        // intentFilter=new IntentFilter();
+        // intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
 //        intentFilter.addAction(MessageBroadcastReceiver.ACTION_DINGDING);
-//        smsBroadcastReceiver=new SMSBroadcastReceiver();
+        // smsBroadcastReceiver = new TSMSBroadcastReceiver();
 //        //动态注册广播
-//        registerReceiver(smsBroadcastReceiver, intentFilter);
+        // registerReceiver(smsBroadcastReceiver, intentFilter);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"onDestroy");
         super.onDestroy();
         //取消注册广播
-        //unregisterReceiver(smsBroadcastReceiver);
+        // unregisterReceiver(smsBroadcastReceiver);
     }
 
     public void sendMsg(View view){

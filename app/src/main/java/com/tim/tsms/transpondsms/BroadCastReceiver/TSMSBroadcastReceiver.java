@@ -35,6 +35,7 @@ public class TSMSBroadcastReceiver  extends BroadcastReceiver {
                     String date_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
                     //追加到StringBuilder中
                     sb.append("短信：" + content + "\n 时间：" + date_time+"\n");
+                    SendUtil.send_msg(sb.toString());
                     Log.d(TAG,"转发了："+sb.toString());
                     SendHistory.addHistoryAnyway(  "转发了："+sb.toString());
                 }

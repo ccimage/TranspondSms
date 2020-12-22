@@ -44,11 +44,13 @@ public class SendHistory {
         for (String str : msg_set){
             getMsg += str+"\n";
         }
-        return getMsg;
+        String sendMsg = "";
+        sp.getString(Define.SP_MSG_LAST_KEY, sendMsg);
+        return getMsg + "\n" + sendMsg;
     }
     public static void addHistoryAnyway(String msg){
         //保存
         SharedPreferences sp = context.getSharedPreferences(Define.SP_MSG,Context.MODE_PRIVATE);
-        sp.edit().putString(Define.SP_MSG_SET_KEY, msg).apply();
+        sp.edit().putString(Define.SP_MSG_LAST_KEY, msg).apply();
     }
 }
