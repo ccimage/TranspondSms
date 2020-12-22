@@ -1,4 +1,4 @@
-# 信息转发 TranspondSms， 把Android手动的短信通过邮件或者钉钉转出去
+# 信息转发 TranspondSms，转发收到的短信（邮件，钉钉，企业微信）
 
 
 博文连接[https://www.jianshu.com/p/608d1b1477e3]   APP下载 [https://pan.baidu.com/s/1kbelTFIf5nwkOY9g6itkvA]
